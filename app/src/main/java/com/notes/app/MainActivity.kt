@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.notes.app.data.Note
 import com.notes.app.data.NotesManager
+import com.notes.app.ui.screens.main.MainPage
 import com.notes.app.ui.theme.NotesAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,17 +22,22 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NotesAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = NotesManager.loadNote("Kirunk").toString(),
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                    Greeting(
-                        name = NotesManager.loadNote("Kirunk2").toString(),
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                MainPage() {
+                    println("Performed $it")
                 }
             }
+//            NotesAppTheme {
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//                    Greeting(
+//                        name = NotesManager.loadNote(3445).toString(),
+//                        modifier = Modifier.padding(innerPadding)
+//                    )
+//                    Greeting(
+//                        name = NotesManager.loadNote(453535).toString(),
+//                        modifier = Modifier.padding(innerPadding)
+//                    )
+//                }
+//            }
         }
     }
 }
