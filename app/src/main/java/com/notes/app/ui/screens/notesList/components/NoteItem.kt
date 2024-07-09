@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,9 +42,14 @@ fun MessageItem(
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
             .padding(horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically
-    ){
+    ) {
         val isDescAvailable = note.description.isNotBlank()
-        AnimatedVisibility(isSelected) { Checkbox(true, {}) }
+        AnimatedVisibility(isSelected) {
+            Checkbox(
+                true, null,
+                Modifier.padding(horizontal = 10.dp)
+            )
+        }
         AnimatedVisibility(!isSelected) { Spacer(modifier = Modifier.width(5.dp)) }
         Column(Modifier.padding(start = 5.dp, end = 15.dp), verticalArrangement = Arrangement.Bottom){
             Text(

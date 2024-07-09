@@ -6,8 +6,9 @@ import java.util.Locale
 
 enum class SortNotesBy(val type:Int, val isDescending:Boolean = false){
 //    ByIsUnchecked(1, true), ByIsChecked(1),
-    ByDate(2), ByDateDescending(2, true),
-    ByTitle(3), ByTitleDescending(3, true),
+    ByTitle(2), ByTitleDescending(2, true),
+    ByCreateTime(3), ByCreateTimeDes(3, true),
+    ByUpdateTime(4), ByUpdateTimeDes(4, true),
 }
 
 val dateFormat = SimpleDateFormat("MMM d yyyy, EEE", Locale.US)
@@ -15,10 +16,12 @@ fun sortToDoListBy(msgList: List<Note>, sortBy: SortNotesBy): Pair<List<Note>,Ma
     val sortedList = when(sortBy){
 //        SortNotesBy.ByIsChecked -> msgList.sortedBy { if(it.isDone) 0 else 1 }
 //        SortNotesBy.ByIsUnchecked -> msgList.sortedByDescending { if(it.isDone) 0 else 1 }
-        SortNotesBy.ByDate -> msgList.sortedBy { it.createdAt }
-        SortNotesBy.ByDateDescending -> msgList.sortedByDescending { it.createdAt }
         SortNotesBy.ByTitle -> msgList.sortedBy { it.title }
         SortNotesBy.ByTitleDescending -> msgList.sortedByDescending { it.title }
+        SortNotesBy.ByCreateTime -> msgList.sortedBy { it.createdAt }
+        SortNotesBy.ByCreateTimeDes -> msgList.sortedByDescending { it.createdAt }
+        SortNotesBy.ByUpdateTime -> msgList.sortedBy { it.updatedAt }
+        SortNotesBy.ByUpdateTimeDes -> msgList.sortedByDescending { it.updatedAt }
     }
 
     val headerMap = HashMap<Int,String>(sortedList.size/4)
@@ -31,11 +34,14 @@ fun sortToDoListBy(msgList: List<Note>, sortBy: SortNotesBy): Pair<List<Note>,Ma
 //        headerMap[sortedList.count { !it.isDone }] = "Tasks Completed"
 //    }
 //    else
-    if(sortBy.type==2) sortedList.forEachIndexed { idx, msg ->
-        var msgDate = dateFormat.format(Date(msg.createdAt))
-        msgDate = "on $msgDate"
-        if(!headerMap.containsValue(msgDate))
-            headerMap[idx] = msgDate
+    if(sortBy.type > 2) sortedList.forEachIndexed { idx, note ->
+        var noteData = dateFormat.format(
+            if(sortBy.type == 3) Date(note.createdAtInMilli)
+            else Date(note.updatedAt)
+        )
+        noteData = "on $noteData"
+        if(!headerMap.containsValue(noteData))
+            headerMap[idx] = noteData
     }
 
     return Pair(sortedList, headerMap)

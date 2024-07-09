@@ -3,7 +3,9 @@ package com.notes.app.ui.screens
 import com.notes.app.data.Note
 import com.notes.app.data.SortNotesBy
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentSetOf
 
 sealed class UiAction
 sealed class FragmentState
@@ -18,23 +20,27 @@ sealed class MainAct: UiAction() {
 
 data class DrawerStates(
     val userName: String = "H Rahim",
-    val notesWritten: Int = 0
+    val notesWritten: Int = 0,
+    val isSortByMenuOpen: Boolean = false,
+    val currentSortBy: SortNotesBy = SortNotesBy.ByTitle,
 )
 sealed class DrawerAct: UiAction() {
     data class MediaPrs(val media: String): DrawerAct()
     data object DiaryWrittenPrs: DrawerAct()
-    data object SortByPrs: DrawerAct()
     data object ClearNotesPrs: DrawerAct()
+    data object SortByPrs: DrawerAct()
+    data class SortByItemPrs(val by: SortNotesBy): DrawerAct()
+    data object SortByDismissed: DrawerAct()
 }
 
 data class NotesList(
     val notesList: ImmutableList<Note> = persistentListOf(),
-    val sortBy: SortNotesBy = SortNotesBy.ByDate,
-    val notesSelected: ImmutableList<Long> = persistentListOf()
+    val sortNotesBy: SortNotesBy = SortNotesBy.ByCreateTime,
+    val notesSelected: ImmutableSet<Long> = persistentSetOf()
 ): FragmentState()
 sealed class NotesListAct: UiAction() {
-    data class NotePrs(val note: Long): NotesListAct()
-    data class NoteLPrs(val note: Long): NotesListAct()
+    data class NotePrs(val noteId: Long): NotesListAct()
+    data class NoteLPrs(val noteId: Long): NotesListAct()
     data object SelectAllPrs: NotesListAct()
     data object UnSelectAllPrs: NotesListAct()
     data object AddNewNotes: NotesListAct()

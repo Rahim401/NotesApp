@@ -2,6 +2,7 @@ package com.notes.app.ui.screens.drawer
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,16 +18,19 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.notes.app.R
+import com.notes.app.data.SortNotesBy
 import com.notes.app.ui.screens.DrawerAct
 import com.notes.app.ui.screens.DrawerStates
 import com.notes.app.ui.screens.UiAction
 import com.notes.app.ui.screens.drawer.components.ProfileHeader
 import com.notes.app.ui.screens.drawer.components.DrawerItem
 import com.notes.app.ui.screens.drawer.components.ItemDivider
+import com.notes.app.ui.screens.drawer.components.SortByDropDownMenu
 import com.notes.app.ui.theme.NotesAppTheme
 
 
@@ -41,9 +45,11 @@ fun DrawerSheet(
             ProfileHeader(drawerStates.userName) { onAction(DrawerAct.MediaPrs(it)) }
 
             Box(
-                Modifier.fillMaxWidth().background(
-                    MaterialTheme.colorScheme.primary.copy(.5f)
-                )
+                Modifier
+                    .fillMaxWidth()
+                    .background(
+                        MaterialTheme.colorScheme.primary.copy(.5f)
+                    )
             ){
                 Divider(
                     Modifier.fillMaxWidth(drawerStates.notesWritten / 10f),
@@ -56,8 +62,16 @@ fun DrawerSheet(
             }
             ItemDivider()
 
-            DrawerItem("Sort Tasks By", R.drawable.ic_sort){ onAction(DrawerAct.SortByPrs) }
-            DrawerItem("Clear All Tasks", R.drawable.ic_delete_sweep){ onAction(DrawerAct.ClearNotesPrs) }
+            DrawerItem("Clear All Notes", R.drawable.ic_delete_sweep){ onAction(DrawerAct.ClearNotesPrs) }
+            DrawerItem("Sort Notes By", R.drawable.ic_sort){ onAction(DrawerAct.SortByPrs) }
+//            AnimatedVisibility(drawerStates.isSortByMenuOpen) {
+                SortByDropDownMenu(
+                    drawerStates.isSortByMenuOpen,
+                    remember(drawerStates.currentSortBy){ drawerStates.currentSortBy },
+                    { onAction(DrawerAct.SortByItemPrs(it)) },
+                    { onAction(DrawerAct.SortByDismissed) }
+                )
+//            }
         }
     }
 }

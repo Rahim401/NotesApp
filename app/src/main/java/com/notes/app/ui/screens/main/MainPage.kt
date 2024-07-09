@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.notes.app.data.Note
 import com.notes.app.ui.screens.DrawerStates
 import com.notes.app.ui.screens.FragmentState
-import com.notes.app.ui.screens.MainAct
 import com.notes.app.ui.screens.MainStates
 import com.notes.app.ui.screens.NotesEdit
 import com.notes.app.ui.screens.NotesEditAct
@@ -31,6 +30,8 @@ import com.notes.app.ui.screens.main.components.ActionButton
 import com.notes.app.ui.screens.main.components.TopAppBar
 import com.notes.app.ui.screens.notesList.NoteListPage
 import com.notes.app.ui.theme.NotesAppTheme
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.launch
 
 @Composable
@@ -47,15 +48,17 @@ fun MainPage(
     val isOnTop by remember { derivedStateOf { scrollState.firstVisibleItemIndex == 0 } }
 
     val onListFrag = fragSt is NotesList
-    val inSelectionMode by remember { derivedStateOf { fragSt is NotesList && fragSt.notesSelected.isNotEmpty()  } }
-    val isCreatingNewNote = remember { fragSt is NotesEdit && fragSt.initialNote.title.isBlank() }
-//    LaunchedEffect(key1 = mainSt.isDrawerOpen) {
-//        if(mainSt.isDrawerOpen) drawerState.open()
-//        else drawerState.close()
+//    val inSelectionMode = remember((fragSt as? NotesList)?.notesList) {
+////        derivedStateOf {
+//            fragSt is NotesList && fragSt.notesSelected.isNotEmpty()
+////        }
 //    }
+    val inSelectionMode = fragSt is NotesList && fragSt.notesSelected.isNotEmpty()
+    val isCreatingNewNote = fragSt is NotesEdit && fragSt.initialNote.title.isBlank()
+
 
     ModalNavigationDrawer(
-        drawerContent = { DrawerSheet(drawerSt) },
+        drawerContent = { DrawerSheet(drawerSt, onAction) },
         drawerState = drawerState,
         gesturesEnabled = onListFrag && !inSelectionMode
     ) {
@@ -94,12 +97,9 @@ fun MainPage(
             }
         ) { pd ->
             if(fragSt is NotesList) NoteListPage(
-                Modifier
-                    .fillMaxSize()
-                    .padding(pd),
+                Modifier.fillMaxSize().padding(pd),
                 fragSt, scrollState, onAction
             )
-
         }
     }
 }
@@ -107,7 +107,15 @@ fun MainPage(
 @Preview
 @Composable
 fun Preview() {
+    val x = Note("Hello", "May name is billa")
     NotesAppTheme {
-        MainPage()
+        MainPage(
+            fragSt = NotesList(
+                notesList = persistentListOf(
+                    x
+                ),
+                notesSelected = persistentSetOf(x.id)
+            )
+        )
     }
 }

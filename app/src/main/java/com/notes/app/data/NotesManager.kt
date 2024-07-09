@@ -24,10 +24,10 @@ object NotesManager {
         else File(notesDir, "$noteId.md").exists()
     }
 
-    fun loadNote(noteId: Long): Note? {
+    fun loadNote(noteId: Long): Note? = loadNote("$noteId.md")
+    fun loadNote(noteName: String): Note? = loadNote(File(notesDir, noteName))
+    fun loadNote(noteFl: File): Note? {
         if(!::notesDir.isInitialized) return null
-        val noteFl = File(notesDir, "$noteId.md")
-
         if(!noteFl.exists()) return null
         else {
             val content = noteFl.readText().split("\n", limit = 4)
@@ -43,6 +43,7 @@ object NotesManager {
             catch (e: Exception) { e.printStackTrace(); return null }
         }
     }
+    fun loadAllNotes() = notesDir.list()?.mapNotNull { loadNote(it) } ?: listOf()
 
     fun dumpNote(note: Note): Boolean {
         if(!::notesDir.isInitialized) return false
@@ -56,5 +57,12 @@ object NotesManager {
             it.write(note.description)
         }
         return true
+    }
+
+    fun removeNote(noteId: Long) = File(
+        notesDir, "$noteId.md"
+    ).delete()
+    fun removeAllNotes() = loadAllNotes().forEach {
+        removeNote(it.id)
     }
 }

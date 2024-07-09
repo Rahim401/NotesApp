@@ -4,43 +4,43 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.notes.app.data.Note
-import com.notes.app.data.NotesManager
+import androidx.lifecycle.ViewModelProvider
 import com.notes.app.ui.screens.main.MainPage
 import com.notes.app.ui.theme.NotesAppTheme
 
 class MainActivity : ComponentActivity() {
+    private lateinit var viewModel: MainVM
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this)[MainVM::class.java]
+
+        val isFirstCreation = savedInstanceState?.getBoolean("isFirstTime") ?: true
+        if(isFirstCreation) viewModel.initializeModel(this)
+
         enableEdgeToEdge()
         setContent {
             NotesAppTheme {
-                MainPage() {
-                    println("Performed $it")
-                }
+                MainPage(
+                    fragSt = viewModel.getNotesListStates(),
+                    drawerSt = viewModel.getDrawerStates(),
+                    onAction = remember { { viewModel.handelAction(it) } }
+                )
             }
-//            NotesAppTheme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    Greeting(
-//                        name = NotesManager.loadNote(3445).toString(),
-//                        modifier = Modifier.padding(innerPadding)
-//                    )
-//                    Greeting(
-//                        name = NotesManager.loadNote(453535).toString(),
-//                        modifier = Modifier.padding(innerPadding)
-//                    )
-//                }
-//            }
         }
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("isFirstTime", false)
+        super.onSaveInstanceState(outState)
+    }
 }
+
+
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {

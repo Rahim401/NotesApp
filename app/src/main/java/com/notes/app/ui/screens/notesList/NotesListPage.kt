@@ -1,5 +1,7 @@
 package com.notes.app.ui.screens.notesList
 
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,6 +28,7 @@ import com.notes.app.ui.screens.notesList.components.MessageItem
 import com.notes.app.ui.screens.notesList.components.NoteListHeader
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteListPage(
     modifier: Modifier = Modifier,
@@ -33,8 +36,8 @@ fun NoteListPage(
     lazyListState: LazyListState = rememberLazyListState(),
     onAction: (UiAction) -> Unit = {}
 ) {
-    val (sortedList, headerMap) = remember {
-        sortToDoListBy(noteListSt.notesList, SortNotesBy.ByTitle)
+    val (sortedList, headerMap) = remember(noteListSt.notesList, noteListSt.sortNotesBy) {
+        sortToDoListBy(noteListSt.notesList, noteListSt.sortNotesBy)
     }
     if (sortedList.isEmpty()) {
         Column(
@@ -42,7 +45,7 @@ fun NoteListPage(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
         ) {
-            Text("No Tasks available!", style = MaterialTheme.typography.titleLarge)
+            Text("No Notes available!", style = MaterialTheme.typography.titleLarge)
         }
     }
     else LazyColumn(modifier.padding(10.dp), lazyListState) {
@@ -53,12 +56,12 @@ fun NoteListPage(
             )
 
             MessageItem(
-                note = note, //{ state -> onMsgStateChanged(msg,state) },
-                modifier = Modifier.fillMaxWidth().padding(5.dp),
+                note = note,
+                modifier = Modifier.fillMaxWidth().padding(5.dp)
+                    .animateItemPlacement(tween(300)),
                 isSelected = noteListSt.notesSelected.contains(note.id),
                 onClick = { onAction(NotesListAct.NotePrs(note.id)) },
                 onLongClick = { onAction(NotesListAct.NoteLPrs(note.id)) },
-//                postModifier = Modifier.clickable(true,onClick= { onMsgClicked(msg) })
             )
         }
     }
