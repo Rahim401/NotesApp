@@ -8,7 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import com.notes.app.ui.screens.main.MainPage
 import com.notes.app.ui.theme.NotesAppTheme
@@ -17,8 +19,9 @@ class MainActivity : ComponentActivity() {
     private lateinit var viewModel: MainVM
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[MainVM::class.java]
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        viewModel = ViewModelProvider(this)[MainVM::class.java]
         val isFirstCreation = savedInstanceState?.getBoolean("isFirstTime") ?: true
         if(isFirstCreation) viewModel.initializeModel(this)
 
@@ -26,7 +29,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             NotesAppTheme {
                 MainPage(
-                    fragSt = viewModel.getNotesListStates(),
+                    fragSt = viewModel.getFragmentStates(),
                     drawerSt = viewModel.getDrawerStates(),
                     onAction = remember { { viewModel.handelAction(it) } }
                 )

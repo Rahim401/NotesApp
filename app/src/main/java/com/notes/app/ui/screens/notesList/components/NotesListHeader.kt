@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun NoteListHeader(text: String, modifier: Modifier=Modifier) {
+fun NoteListHeader(text: String, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.heightIn(min = 25.dp),
         contentAlignment = Alignment.BottomStart

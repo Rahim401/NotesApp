@@ -28,6 +28,7 @@ import com.notes.app.ui.screens.UiAction
 import com.notes.app.ui.screens.drawer.DrawerSheet
 import com.notes.app.ui.screens.main.components.ActionButton
 import com.notes.app.ui.screens.main.components.TopAppBar
+import com.notes.app.ui.screens.notesEdit.NotesEditPage
 import com.notes.app.ui.screens.notesList.NoteListPage
 import com.notes.app.ui.theme.NotesAppTheme
 import kotlinx.collections.immutable.persistentListOf
@@ -54,7 +55,7 @@ fun MainPage(
 ////        }
 //    }
     val inSelectionMode = fragSt is NotesList && fragSt.notesSelected.isNotEmpty()
-    val isCreatingNewNote = fragSt is NotesEdit && fragSt.initialNote.title.isBlank()
+    val isCreatingNewNote = fragSt is NotesEdit && fragSt.title.isBlank()
 
 
     ModalNavigationDrawer(
@@ -99,6 +100,10 @@ fun MainPage(
             if(fragSt is NotesList) NoteListPage(
                 Modifier.fillMaxSize().padding(pd),
                 fragSt, scrollState, onAction
+            )
+            else if(fragSt is NotesEdit) NotesEditPage(
+                Modifier.fillMaxSize().padding(pd),
+                fragSt, onAction
             )
         }
     }

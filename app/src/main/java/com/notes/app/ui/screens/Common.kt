@@ -2,6 +2,7 @@ package com.notes.app.ui.screens
 
 import com.notes.app.data.Note
 import com.notes.app.data.SortNotesBy
+import com.notes.app.data.currentTimeDelayed
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
@@ -47,10 +48,17 @@ sealed class NotesListAct: UiAction() {
     data object DeleteNotes: NotesListAct()
 }
 
-data class NotesEdit(val initialNote: Note = Note("")): FragmentState()
+data class NotesEdit(
+//    val initialNote: Note = Note(""),
+    val id: Long = currentTimeDelayed(),
+    val title: String = "",
+    val description: String = "",
+): FragmentState()
 sealed class NotesEditAct: UiAction() {
     data object OnBackPrs: NotesEditAct()
     data class SaveNotes(val note: Note): NotesEditAct()
+    data class OnTitleChanged(val title: String): NotesEditAct()
+    data class OnDescriptionChanged(val desc: String): NotesEditAct()
 }
 
 

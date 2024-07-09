@@ -50,15 +50,20 @@ fun NoteListPage(
     }
     else LazyColumn(modifier.padding(10.dp), lazyListState) {
         itemsIndexed(sortedList, { _, item -> item.id }) { idx, note ->
-            if(headerMap.containsKey(idx)) NoteListHeader(
-                headerMap[idx]!!,
-                Modifier.padding(start= 5.dp)
-            )
+            println("${note.title} $idx ${headerMap[idx]}")
+            headerMap[idx]?.let { header ->
+                NoteListHeader(
+                    header,
+                    Modifier.padding(start= 5.dp)
+                )
+            }
 
             MessageItem(
                 note = note,
-                modifier = Modifier.fillMaxWidth().padding(5.dp)
-                    .animateItemPlacement(tween(300)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+//                    .animateItemPlacement(tween(300)),
                 isSelected = noteListSt.notesSelected.contains(note.id),
                 onClick = { onAction(NotesListAct.NotePrs(note.id)) },
                 onLongClick = { onAction(NotesListAct.NoteLPrs(note.id)) },

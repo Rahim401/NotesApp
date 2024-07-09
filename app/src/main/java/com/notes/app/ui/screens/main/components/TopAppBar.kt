@@ -2,7 +2,13 @@ package com.notes.app.ui.screens.main.components
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -24,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.notes.app.data.Note
@@ -89,7 +96,7 @@ fun TopAppBar2(
 ) {
     val isCreating by remember {
         derivedStateOf {
-            fragSt is NotesEdit && fragSt.initialNote.title.isBlank()
+            fragSt is NotesEdit && fragSt.title.isBlank()
         }
     }
     val inSelectMode by remember {
@@ -144,13 +151,22 @@ fun TopAppBar(
 ) {
     CenterAlignedTopAppBar(
         title = {
-            AnimatedVisibility(onListFrag) { Text("Notes App") }
-            AnimatedVisibility(!onListFrag) {
+            Crossfade(onListFrag, label = "") { onFrag ->
                 Text(
-                    if(isCreatingNewNote) "Creating Notes"
-                    else "Editing Notes"
+                    if(onFrag) "Notes App"
+                    else if(isCreatingNewNote) "Creating Notes"
+                    else "Editing Notes",
+                    textAlign = TextAlign.Center
                 )
             }
+
+//            AnimatedVisibility(onListFrag) { Text("Notes App") }
+//            AnimatedVisibility(!onListFrag) {
+//                Text(
+//                    if(isCreatingNewNote) "Creating Notes"
+//                    else "Editing Notes"
+//                )
+//            }
         },
         navigationIcon = {
             AnimatedVisibility(onListFrag && !isInSelectionMode) {

@@ -2,6 +2,9 @@ package com.notes.app.ui.screens.main.components
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -15,6 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.notes.app.ui.screens.FragmentState
 import com.notes.app.ui.screens.NotesEdit
@@ -67,7 +72,8 @@ fun ActionButton2(
             }
         },
         containerColor = MaterialTheme.colorScheme.primary,
-        expanded = isExpanded
+        expanded = isExpanded,
+        modifier = Modifier.animateContentSize()
     )
 }
 
@@ -80,18 +86,44 @@ fun ActionButton(
 ) {
     ExtendedFloatingActionButton(
         text = {
+//            Crossfade(
+//                Pair(onListFrag, isInSelectionMode),
+//                label = ""
+//            ) { (onFrag, inSel) ->
+//                Text(
+//                    if(onFrag) {
+//                        if(inSel) "Delete Notes"
+//                        else "Add Notes"
+//                    }
+//                    else "Save Notes",
+//                )
+//            }
             AnimatedVisibility(onListFrag && !isInSelectionMode) { Text("Add Notes") }
             AnimatedVisibility(onListFrag && isInSelectionMode) { Text("Delete Notes") }
             AnimatedVisibility(!onListFrag) { Text("Save Notes") }
         },
         icon = {
+//            Crossfade(
+//                Pair(onListFrag, isInSelectionMode),
+//                label = ""
+//            ) { (onFrag, inSel) ->
+//                Icon(
+//                    if(onFrag) {
+//                        if(inSel) Icons.Filled.Remove
+//                        else Icons.Filled.Add
+//                    }
+//                    else Icons.Filled.Save,
+//                    contentDescription = null
+//                )
+//            }
             AnimatedVisibility(onListFrag && !isInSelectionMode) { Icon(Icons.Filled.Add,null) }
             AnimatedVisibility(onListFrag && isInSelectionMode) { Icon(Icons.Filled.Remove,null) }
             AnimatedVisibility(!onListFrag) { Icon(Icons.Filled.Save,null) }
         },
         onClick = onClick,
         containerColor = MaterialTheme.colorScheme.primary,
-        expanded = isExpanded
+        expanded = isExpanded,
+        modifier = Modifier.imePadding()
     )
 }
 
