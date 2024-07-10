@@ -56,7 +56,7 @@ fun MainPage(
 //    }
     val inSelectionMode = fragSt is NotesList && fragSt.notesSelected.isNotEmpty()
     val isCreatingNewNote = fragSt is NotesEdit && fragSt.title.isBlank()
-
+    val isInEditMode = fragSt is NotesEdit && fragSt.isInEditMode
 
     ModalNavigationDrawer(
         drawerContent = { DrawerSheet(drawerSt, onAction) },
@@ -67,7 +67,7 @@ fun MainPage(
             topBar = {
                 TopAppBar(
                     onListFrag, inSelectionMode,
-                    isCreatingNewNote,
+                    isCreatingNewNote, isInEditMode,
                     onLeftBtnPrs = {
                         when {
                             onListFrag && !inSelectionMode -> {
@@ -80,8 +80,11 @@ fun MainPage(
                         }
                     },
                     onRightBtnPrs = {
-                        if(onListFrag && inSelectionMode)
-                            onAction(NotesListAct.SelectAllPrs)
+                        if(onListFrag) {
+                            if(inSelectionMode)
+                                onAction(NotesListAct.SelectAllPrs)
+                        }
+                        else onAction(NotesEditAct.OnModeChangePrs)
                     }
                 )
             },
@@ -122,9 +125,7 @@ fun Preview() {
     NotesAppTheme {
         MainPage(
             fragSt = NotesList(
-                notesList = persistentListOf(
-                    x
-                ),
+                notesList = persistentListOf(x),
                 notesSelected = persistentSetOf(x.id)
             )
         )

@@ -15,7 +15,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Deselect
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Preview
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -146,6 +148,7 @@ fun TopAppBar(
     onListFrag: Boolean = true,
     isInSelectionMode: Boolean = false,
     isCreatingNewNote: Boolean = true,
+    isInEditMode: Boolean = true,
     onLeftBtnPrs: () -> Unit = {},
     onRightBtnPrs: () -> Unit = {},
 ) {
@@ -182,8 +185,14 @@ fun TopAppBar(
             }
         },
         actions = {
-            AnimatedVisibility(isInSelectionMode) {
+            AnimatedVisibility(onListFrag && isInSelectionMode) {
                 AppBarButton(Icons.Filled.SelectAll, onRightBtnPrs)
+            }
+            AnimatedVisibility(!onListFrag && isInEditMode) {
+                AppBarButton(Icons.Filled.Preview, onRightBtnPrs)
+            }
+            AnimatedVisibility(!onListFrag && !isInEditMode) {
+                AppBarButton(Icons.Filled.Edit, onRightBtnPrs)
             }
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
@@ -202,6 +211,8 @@ fun AppBarPreview() {
     NotesAppTheme {
 //        TopAppBar2 {  }
         TopAppBar(
+            onListFrag = false,
+            isInEditMode = false
 //            NotesList(notesSelected = persistentListOf())
 //            NotesEdit(Note(""))
         )

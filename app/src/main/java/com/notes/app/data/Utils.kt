@@ -40,7 +40,9 @@ fun sortToDoListBy(msgList: List<Note>, sortBy: SortNotesBy): Pair<List<Note>,Ma
             if(sortBy.type == 3) Date(note.createdAtInMilli)
             else Date(note.updatedAt)
         )
-        noteData = "on $noteData"
+
+        noteData = if(sortBy.type == 3) "created on $noteData"
+        else "updated on $noteData"
         if(!headerMap.containsValue(noteData))
             headerMap[idx] = noteData
     }

@@ -35,11 +35,13 @@ import com.notes.app.ui.screens.NotesEdit
 import com.notes.app.ui.screens.NotesEditAct
 import com.notes.app.ui.screens.NotesList
 import com.notes.app.ui.screens.UiAction
+import com.notes.app.ui.screens.notesEdit.components.ContentEditText
+import com.notes.app.ui.screens.notesEdit.components.MarkDownText
+import com.notes.app.ui.screens.notesEdit.components.getEditTextColor
 import com.notes.app.ui.theme.NotesAppTheme
 
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 fun NotesEditPage(
     modifier: Modifier = Modifier,
     noteEditSt: NotesEdit = NotesEdit(),
@@ -50,7 +52,9 @@ fun NotesEditPage(
     Column(modifier) {
         if(!isCreatingNewNote) Text(
             "Created on ${dateFormat.format(noteEditSt.id)}",
-            Modifier.padding(top = 10.dp, end = 15.dp).align(Alignment.End),
+            Modifier
+                .padding(top = 10.dp, end = 15.dp)
+                .align(Alignment.End),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
         )
@@ -58,14 +62,7 @@ fun NotesEditPage(
         TextField(
             value = noteEditSt.title,
             onValueChange = { onAction(NotesEditAct.OnTitleChanged(it)) },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.surface,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                disabledContainerColor = MaterialTheme.colorScheme.surface,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
-            ),
+            colors = getEditTextColor(),
             textStyle = MaterialTheme.typography.headlineSmall,
             placeholder = {
                 Text(
@@ -78,26 +75,12 @@ fun NotesEditPage(
 
         HorizontalDivider()
 
-        TextField(
-            value = noteEditSt.description,
-            onValueChange = { onAction(NotesEditAct.OnDescriptionChanged(it)) },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.surface,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                disabledContainerColor = MaterialTheme.colorScheme.surface,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
-            ),
-            textStyle = MaterialTheme.typography.bodyLarge,
-            placeholder = {
-                Text(
-                    text = "Contents of the Note",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            },
-            shape = RectangleShape,
-            modifier = Modifier.fillMaxSize(),
+        if(noteEditSt.isInEditMode) ContentEditText(noteEditSt.description, Modifier.fillMaxSize()) {
+            onAction(NotesEditAct.OnDescriptionChanged(it))
+        }
+        else MarkDownText(
+            noteEditSt.description,
+            Modifier.fillMaxSize().padding(15.dp)
         )
     }
 }

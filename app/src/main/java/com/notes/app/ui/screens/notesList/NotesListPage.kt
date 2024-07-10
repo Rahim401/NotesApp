@@ -50,7 +50,7 @@ fun NoteListPage(
     }
     else LazyColumn(modifier.padding(10.dp), lazyListState) {
         itemsIndexed(sortedList, { _, item -> item.id }) { idx, note ->
-            println("${note.title} $idx ${headerMap[idx]}")
+//            println("${note.title} $idx ${headerMap[idx]}")
             headerMap[idx]?.let { header ->
                 NoteListHeader(
                     header,

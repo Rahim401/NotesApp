@@ -53,9 +53,11 @@ data class NotesEdit(
     val id: Long = currentTimeDelayed(),
     val title: String = "",
     val description: String = "",
+    val isInEditMode: Boolean = true
 ): FragmentState()
 sealed class NotesEditAct: UiAction() {
     data object OnBackPrs: NotesEditAct()
+    data object OnModeChangePrs: NotesEditAct()
     data class SaveNotes(val note: Note): NotesEditAct()
     data class OnTitleChanged(val title: String): NotesEditAct()
     data class OnDescriptionChanged(val desc: String): NotesEditAct()

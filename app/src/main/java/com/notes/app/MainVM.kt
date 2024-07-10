@@ -22,6 +22,7 @@ import com.notes.app.ui.screens.NotesListAct
 import com.notes.app.ui.screens.UiAction
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
+import java.util.Date
 
 const val AcharyaLinkedInLink = "https://www.linkedin.com/school/acharya-institutes"
 const val AcharyaTwitterInLink = "https://x.com/acharya_ac_in"
@@ -53,13 +54,13 @@ class MainVM: ViewModel() {
         when(action) {
             is DrawerAct.DiaryWrittenPrs -> notesList.addAll(
                 listOf(
-                    Note("Rahim","Ya, that's my name"),
+                    Note("Rahim","Ya, that's my name", currentTimeDelayed() - 2*86400000, currentTimeDelayed() - 2*8640000),
                     Note("Bila","Gang Gang Gangster"),
-                    Note("Thaliva","Time to lead", currentTimeDelayed() + 100000000),
+                    Note("Thaliva","Time to lead", currentTimeDelayed()  - 86400000, currentTimeDelayed()  - 86400000),
                     Note("Mangatha","An Venkat Prabu Game"),
-                    Note("Kalki","Kamal as Villan",currentTimeDelayed() + 50000000,currentTimeDelayed() + 800000000),
+                    Note("Kalki","Kamal as Villan", currentTimeDelayed() - 4*86400000, currentTimeDelayed() - 4*86400000),
                     Note("GOAT","Enna elavune thrila"),
-                    Note("Ommbu","",currentTimeDelayed() + 100000000,currentTimeDelayed() + 600000000),
+//                    Note("Ommbu","",currentTimeDelayed() + 100000000,currentTimeDelayed() + 600000000),
                 )
             )
             is DrawerAct.MediaPrs -> {
@@ -119,6 +120,7 @@ class MainVM: ViewModel() {
     private var editNoteTitle by mutableStateOf("")
     private var editNoteDescription by mutableStateOf("")
     private var editingNoteOfId by mutableLongStateOf(0L)
+    private var isInEditMode by mutableStateOf(true)
     private fun initEditFields(
         withNote: Note = Note(
             createdAt = currentTimeDelayed()
@@ -145,6 +147,7 @@ class MainVM: ViewModel() {
                     onListFrag = true
                 }
             }
+            is NotesEditAct.OnModeChangePrs -> isInEditMode = !isInEditMode
         }
     }
 
@@ -157,8 +160,8 @@ class MainVM: ViewModel() {
         notesSelected.toPersistentSet()
     )
     fun getNotesEditStates() = NotesEdit(
-        editingNoteOfId,
-        editNoteTitle, editNoteDescription
+        editingNoteOfId, editNoteTitle,
+        editNoteDescription, isInEditMode
     )
 
     fun getFragmentStates(): FragmentState {
