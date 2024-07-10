@@ -23,7 +23,8 @@ import com.notes.app.ui.screens.UiAction
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
 
-
+const val AcharyaLinkedInLink = "https://www.linkedin.com/school/acharya-institutes"
+const val AcharyaTwitterInLink = "https://x.com/acharya_ac_in"
 class MainVM: ViewModel() {
     fun initializeModel(context: Context) {
         loadNotes()
@@ -36,19 +37,19 @@ class MainVM: ViewModel() {
     }
 
     private var onListFrag by mutableStateOf(true)
-    fun handelAction(action: UiAction) {
+    fun handelAction(action: UiAction, context: Context? = null) {
         println("Handling action $action")
         when(action) {
             is MainAct -> {}
-            is DrawerAct -> handelDrawerAction(action)
+            is DrawerAct -> handelDrawerAction(action, context)
             is NotesListAct -> handelNoteListAction(action)
             is NotesEditAct -> handelNoteEditAction(action)
         }
     }
 
-    private val userName = "H Rahim"
+    private val userName = "6D CSE, AIT"
     private var isSortByMenuOpen by mutableStateOf(false)
-    private fun handelDrawerAction(action: DrawerAct) {
+    private fun handelDrawerAction(action: DrawerAct, context: Context? = null) {
         when(action) {
             is DrawerAct.DiaryWrittenPrs -> notesList.addAll(
                 listOf(
@@ -61,7 +62,13 @@ class MainVM: ViewModel() {
                     Note("Ommbu","",currentTimeDelayed() + 100000000,currentTimeDelayed() + 600000000),
                 )
             )
-            is DrawerAct.MediaPrs -> {}
+            is DrawerAct.MediaPrs -> {
+                when(action.media) {
+                    "LinkedIn" -> context?.goToLink(AcharyaLinkedInLink)
+                    "Twitter" -> context?.goToLink(AcharyaTwitterInLink)
+                    else -> {}
+                }
+            }
             is DrawerAct.ClearNotesPrs -> {
                 notesList.clear()
                 notesSelected.removeAll(notesSelected)

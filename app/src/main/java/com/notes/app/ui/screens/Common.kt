@@ -20,7 +20,7 @@ sealed class MainAct: UiAction() {
 }
 
 data class DrawerStates(
-    val userName: String = "H Rahim",
+    val userName: String = "6D, AIT",
     val notesWritten: Int = 0,
     val isSortByMenuOpen: Boolean = false,
     val currentSortBy: SortNotesBy = SortNotesBy.ByTitle,

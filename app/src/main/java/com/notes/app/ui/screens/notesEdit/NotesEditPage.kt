@@ -43,10 +43,12 @@ import com.notes.app.ui.theme.NotesAppTheme
 fun NotesEditPage(
     modifier: Modifier = Modifier,
     noteEditSt: NotesEdit = NotesEdit(),
+    isCreatingNewNote: Boolean = false,
     onAction: (UiAction) -> Unit = {}
 ) {
+
     Column(modifier) {
-        Text(
+        if(!isCreatingNewNote) Text(
             "Created on ${dateFormat.format(noteEditSt.id)}",
             Modifier.padding(top = 10.dp, end = 15.dp).align(Alignment.End),
             style = MaterialTheme.typography.bodyMedium,
@@ -87,11 +89,11 @@ fun NotesEditPage(
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
             ),
-            textStyle = MaterialTheme.typography.bodyMedium,
+            textStyle = MaterialTheme.typography.bodyLarge,
             placeholder = {
                 Text(
                     text = "Contents of the Note",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyLarge
                 )
             },
             shape = RectangleShape,

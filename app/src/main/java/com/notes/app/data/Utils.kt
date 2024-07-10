@@ -12,6 +12,7 @@ enum class SortNotesBy(val type:Int, val isDescending:Boolean = false){
 }
 
 val dateFormat = SimpleDateFormat("MMM d yyyy, EEE", Locale.US)
+val timeFormat = SimpleDateFormat("MMM d, hh:mm a", Locale.US)
 fun sortToDoListBy(msgList: List<Note>, sortBy: SortNotesBy): Pair<List<Note>,Map<Int,String>>{
     val sortedList = when(sortBy){
 //        SortNotesBy.ByIsChecked -> msgList.sortedBy { if(it.isDone) 0 else 1 }

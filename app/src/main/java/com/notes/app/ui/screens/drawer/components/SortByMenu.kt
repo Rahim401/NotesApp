@@ -32,23 +32,23 @@ fun SortByDropDownMenu(
         if(currentSortBy != SortNotesBy.ByCreateTimeDes) DropdownMenuItem(
             text = { Text("Recently Created first") },
             onClick = { onSelect(SortNotesBy.ByCreateTimeDes) },
-            leadingIcon = { Icon(R.drawable.ic_sort_clock_ascending.dRes, contentDescription = null) }
-        )
-        if(currentSortBy != SortNotesBy.ByCreateTime) DropdownMenuItem(
-            text = { Text("Recently Created last") },
-            onClick = { onSelect(SortNotesBy.ByCreateTime) },
             leadingIcon = { Icon(R.drawable.ic_sort_clock_descending.dRes, contentDescription = null) }
         )
+//        if(currentSortBy != SortNotesBy.ByCreateTime) DropdownMenuItem(
+//            text = { Text("Recently Created last") },
+//            onClick = { onSelect(SortNotesBy.ByCreateTime) },
+//            leadingIcon = { Icon(R.drawable.ic_sort_clock_descending.dRes, contentDescription = null) }
+//        )
         if(currentSortBy != SortNotesBy.ByUpdateTimeDes) DropdownMenuItem(
             text = { Text("Recently Updated first") },
             onClick = { onSelect(SortNotesBy.ByUpdateTimeDes) },
-            leadingIcon = { Icon(R.drawable.ic_sort_clock_ascending.dRes, contentDescription = null) }
-        )
-        if(currentSortBy != SortNotesBy.ByUpdateTime) DropdownMenuItem(
-            text = { Text("Recently Updated last") },
-            onClick = { onSelect(SortNotesBy.ByUpdateTime) },
             leadingIcon = { Icon(R.drawable.ic_sort_clock_descending.dRes, contentDescription = null) }
         )
+//        if(currentSortBy != SortNotesBy.ByUpdateTime) DropdownMenuItem(
+//            text = { Text("Recently Updated last") },
+//            onClick = { onSelect(SortNotesBy.ByUpdateTime) },
+//            leadingIcon = { Icon(R.drawable.ic_sort_clock_descending.dRes, contentDescription = null) }
+//        )
     }
 }
 

@@ -153,9 +153,11 @@ fun TopAppBar(
         title = {
             Crossfade(onListFrag, label = "") { onFrag ->
                 Text(
-                    if(onFrag) "Notes App"
-                    else if(isCreatingNewNote) "Creating Notes"
-                    else "Editing Notes",
+                    remember {
+                        if(onFrag) "Notes App"
+                        else if(isCreatingNewNote) "Creating Notes"
+                        else "Editing Notes"
+                    },
                     textAlign = TextAlign.Center
                 )
             }
@@ -192,8 +194,6 @@ fun TopAppBar(
         )
     )
 }
-
-
 
 
 @Composable

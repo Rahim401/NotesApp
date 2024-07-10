@@ -50,7 +50,7 @@ fun ProfileHeader(userName:String, onClick:(String)->Unit){
             )
         }
         Text(
-            "Logged in As User",
+            "Designed and Developed From",
             modifier = Modifier.padding(top=30.dp),
             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = .7f),
             style = MaterialTheme.typography.labelLarge,
@@ -67,7 +67,7 @@ fun ProfileHeader(userName:String, onClick:(String)->Unit){
                 .padding(top = 10.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
-            MediaButton(R.drawable.ic_github){ onClick("Github") }
+//            MediaButton(R.drawable.ic_github){ onClick("Github") }
             MediaButton(R.drawable.ic_linkedin){ onClick("LinkedIn") }
             MediaButton(R.drawable.ic_twitter){ onClick("Twitter") }
         }
@@ -78,7 +78,7 @@ fun ProfileHeader(userName:String, onClick:(String)->Unit){
 @Composable
 fun Preview() {
     NotesAppTheme {
-        ProfileHeader(userName = "Rahim H") {
+        ProfileHeader(userName = "6D CSE, AIT") {
             
         }
     }

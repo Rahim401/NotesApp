@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                 MainPage(
                     fragSt = viewModel.getFragmentStates(),
                     drawerSt = viewModel.getDrawerStates(),
-                    onAction = remember { { viewModel.handelAction(it) } }
+                    onAction = remember { { viewModel.handelAction(it, this) } }
                 )
             }
         }

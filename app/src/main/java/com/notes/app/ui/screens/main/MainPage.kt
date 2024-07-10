@@ -66,7 +66,8 @@ fun MainPage(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    onListFrag, inSelectionMode, isCreatingNewNote,
+                    onListFrag, inSelectionMode,
+                    isCreatingNewNote,
                     onLeftBtnPrs = {
                         when {
                             onListFrag && !inSelectionMode -> {
@@ -98,12 +99,17 @@ fun MainPage(
             }
         ) { pd ->
             if(fragSt is NotesList) NoteListPage(
-                Modifier.fillMaxSize().padding(pd),
+                Modifier
+                    .fillMaxSize()
+                    .padding(pd),
                 fragSt, scrollState, onAction
             )
             else if(fragSt is NotesEdit) NotesEditPage(
-                Modifier.fillMaxSize().padding(pd),
-                fragSt, onAction
+                Modifier
+                    .fillMaxSize()
+                    .padding(pd), fragSt,
+                remember { isCreatingNewNote },
+                onAction
             )
         }
     }
